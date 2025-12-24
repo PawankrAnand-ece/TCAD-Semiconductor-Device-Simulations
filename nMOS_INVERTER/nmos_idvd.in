@@ -1,0 +1,27 @@
+go atlas
+
+mesh
+x.mesh loc=0.0 spac=0.1
+x.mesh loc=1.0 spac=0.1
+y.mesh loc=0.0 spac=0.05
+y.mesh loc=0.2 spac=0.05
+
+region num=1 silicon
+
+electrode name=gate   x.min=0 x.max=1 y.min=0 y.max=0
+electrode name=source x.min=0 x.max=0 y.min=0 y.max=0.2
+electrode name=drain  x.min=1 x.max=1 y.min=0 y.max=0.2
+
+doping uniform n.type conc=1e15
+
+models srh
+
+solve init
+solve vgate=5
+
+log outf=nmos_idvd.log
+solve vdrain=0 vstep=0.1 vfinal=5 name=drain
+log off
+tonyplot nmos_idvd.log
+
+quit

@@ -1,0 +1,43 @@
+go atlas
+
+# Mesh
+mesh
+x.mesh loc=0.0 spac=0.1
+x.mesh loc=1.0 spac=0.1
+y.mesh loc=0.0 spac=0.05
+y.mesh loc=0.4 spac=0.05
+
+# Regions
+region num=1 silicon y.min=0.0 y.max=0.2
+region num=2 silicon y.min=0.2 y.max=0.4
+
+# Electrodes
+electrode name=input  x.min=0 x.max=1 y.min=0.2 y.max=0.2
+electrode name=vdd    x.min=0 x.max=1 y.min=0.4 y.max=0.4
+electrode name=gnd    x.min=0 x.max=1 y.min=0.0 y.max=0.0
+electrode name=output x.min=1 x.max=1 y.min=0.0 y.max=0.4
+
+
+# Doping
+doping uniform n.type conc=1e15 region=1
+doping uniform p.type conc=1e15 region=2
+
+# Oxide
+oxide thickness=0.02
+
+# Models
+models srh
+
+# Initial solution
+solve init
+
+# Power supply
+solve vdd=5 name=vdd
+
+# Input sweep (VTC)
+log outf=cmos_vtc.log
+solve vinput=0 vstep=0.1 vfinal=5 name=input
+log off
+tonyplot cmos_vtc.log
+
+quit
